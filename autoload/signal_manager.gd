@@ -4,6 +4,7 @@ extends Node
 signal player_was_hit
 signal player_died
 signal player_powered_up
+signal player_leveled_up
 
 # mob related signals
 signal player_attacked
