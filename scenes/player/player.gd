@@ -54,17 +54,22 @@ var HEALTH_POINTS = 5 # there are 5 lives by default
 # firing related:
 var CAN_FIRE = true
 var PAUSE_TILL_NEXT_FIRE = 0
-const BULLET_SCENE = preload("res://scenes/player/bullet/bullet.tscn")
+const BULLET_SCENE = preload("res://scenes/bullet/bullet.tscn")
+
+# animation related logic
+var CURRENT_ANIMATION = null
 
 # Scraped elements
 @onready var animation_player = $AnimationPlayer
 @onready var player = $"."
 @onready var animated_sprite_2d = $AnimatedSprite2D
+@onready var collision_shape_2d = $CollisionShape2D
 
 func _ready():
 	animated_sprite_2d.animation = GameManager.player_color
 	animated_sprite_2d.frame = GameManager.player_level - 1
-
+	collision_shape_2d.shape.radius = SPECS_FOR_EACH_LEVEL[str(GameManager.player_level)]["collision_range_radius"]
+	
 func _physics_process(delta):
 	# Handle character movement
 	var direction = handle_movement()
@@ -96,17 +101,23 @@ func handle_movement():
 	# clamping the character to the screen
 	var screen_size: Vector2 = get_viewport().size
 	position = position.clamp(Vector2.ZERO, screen_size)
+	GameManager.update_player_position(position)
 	
 	return direction
 
 func handle_animations(direction):
 	# Check horizontal movement for animations
 	if direction.x > 0:
-		animation_player.play("right_yaw")
+		if CURRENT_ANIMATION != "right":
+			animation_player.play("right_yaw")
+			CURRENT_ANIMATION = "right"
 	elif direction.x < 0:
-		animation_player.play("left_yaw")
+		if CURRENT_ANIMATION != "left":
+			animation_player.play("left_yaw")
+			CURRENT_ANIMATION = "left"
 	else:
 		animation_player.play("RESET")
+		CURRENT_ANIMATION = null
 
 func handle_firing(delta):
 	if Input.is_action_just_pressed("fire") and CAN_FIRE:
@@ -117,13 +128,15 @@ func handle_firing(delta):
 		if PAUSE_TILL_NEXT_FIRE <= 0:
 			CAN_FIRE = true
 			PAUSE_TILL_NEXT_FIRE = SPECS_FOR_EACH_LEVEL[str(GameManager.player_level)]["ammo_load_time"]
-			
+
 func fire():
 	# spawning a bullet for each side of the plane (i will be either 1 or -1)
 	for i in range(-1, 2, 2):
 		for n_bullet in range(SPECS_FOR_EACH_LEVEL[str(GameManager.player_level)]["n_bullets_per_fire"]):
 			var new_bullet = BULLET_SCENE.instantiate()
+			new_bullet.set_bullet_state("player_bullet")
 			new_bullet.set_bullet_speed(SPECS_FOR_EACH_LEVEL[str(GameManager.player_level)]["bullet_speed"])
+			new_bullet.set_bullet_direction(Vector2(0, -1))
 			
 			var x_pos = player.position.x + (i * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["distance_to_guns_from_center"]) + (i * n_bullet * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["space_between_guns"])
 			var y_pos = player.position.y + (n_bullet * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["latency_between_bullets"])
@@ -137,3 +150,4 @@ func level_up():
 	if GameManager.player_level < 3:
 		GameManager.player_level += 1
 		animated_sprite_2d.frame = GameManager.player_level - 1
+		collision_shape_2d.shape.radius = SPECS_FOR_EACH_LEVEL[str(GameManager.player_level)]["collision_range_radius"]

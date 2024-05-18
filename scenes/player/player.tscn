@@ -203,7 +203,7 @@ _data = {
 "right_yaw": SubResource("Animation_6hc6k")
 }
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_ewhou")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
