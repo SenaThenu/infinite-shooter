@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cj8x2k1ff68c6"]
+
+[ext_resource type="Script" path="res://scenes/map/map.gd" id="1_6mipm"]
+[ext_resource type="PackedScene" uid="uid://dfdx1ubnvimgn" path="res://scenes/map/tank/tank.tscn" id="2_mlqyh"]
+
+[node name="Map" type="Node2D"]
+position = Vector2(878, 318)
+script = ExtResource("1_6mipm")
+
+[node name="Tank" parent="." instance=ExtResource("2_mlqyh")]
