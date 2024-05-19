@@ -1,24 +1,24 @@
 [gd_scene load_steps=12 format=3 uid="uid://dfdx1ubnvimgn"]
 
-[ext_resource type="Texture2D" uid="uid://b77j2lej3y6e1" path="res://assets/tiles_packed.png" id="1_o5fpr"]
 [ext_resource type="Script" path="res://scenes/map/tank/tank.gd" id="1_s4eex"]
+[ext_resource type="Texture2D" uid="uid://idve64l585ot" path="res://assets/tiles.png" id="3_bcq5x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o56uv"]
 radius = 42.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_r5irg"]
-atlas = ExtResource("1_o5fpr")
-region = Rect2(80, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ojych"]
+atlas = ExtResource("3_bcq5x")
+region = Rect2(85, 34, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yleg2"]
-atlas = ExtResource("1_o5fpr")
-region = Rect2(64, 16, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwxf5"]
+atlas = ExtResource("3_bcq5x")
+region = Rect2(68, 17, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8jx8u"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_r5irg")
+"texture": SubResource("AtlasTexture_ojych")
 }],
 "loop": true,
 "name": &"green",
@@ -26,30 +26,30 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yleg2")
+"texture": SubResource("AtlasTexture_cwxf5")
 }],
 "loop": true,
 "name": &"red",
 "speed": 5.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_vwpy4"]
-atlas = ExtResource("1_o5fpr")
-region = Rect2(96, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_iamfg"]
+atlas = ExtResource("3_bcq5x")
+region = Rect2(102, 34, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ksvvh"]
-atlas = ExtResource("1_o5fpr")
-region = Rect2(96, 16, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_nephe"]
+atlas = ExtResource("3_bcq5x")
+region = Rect2(102, 17, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_io1ur"]
-atlas = ExtResource("1_o5fpr")
-region = Rect2(80, 16, 16, 16)
+[sub_resource type="AtlasTexture" id="AtlasTexture_m3ysw"]
+atlas = ExtResource("3_bcq5x")
+region = Rect2(85, 17, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1v3je"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_vwpy4")
+"texture": SubResource("AtlasTexture_iamfg")
 }],
 "loop": true,
 "name": &"green",
@@ -57,10 +57,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ksvvh")
+"texture": SubResource("AtlasTexture_nephe")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_io1ur")
+"texture": SubResource("AtlasTexture_m3ysw")
 }],
 "loop": true,
 "name": &"red",
@@ -70,7 +70,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_gyoh2"]
 radius = 180.0
 
-[node name="Tank" type="CharacterBody2D"]
+[node name="Tank" type="Area2D"]
 script = ExtResource("1_s4eex")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -79,15 +79,16 @@ shape = SubResource("CircleShape2D_o56uv")
 [node name="BaseSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(4.5, 4.5)
 sprite_frames = SubResource("SpriteFrames_8jx8u")
-animation = &"red"
+animation = &"green"
 
 [node name="HeadSpirte" type="AnimatedSprite2D" parent="."]
 scale = Vector2(4.3, 4.3)
 sprite_frames = SubResource("SpriteFrames_1v3je")
-animation = &"red"
+animation = &"green"
 offset = Vector2(0, 1.25)
 
 [node name="AttackRange" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange"]
 shape = SubResource("CircleShape2D_gyoh2")

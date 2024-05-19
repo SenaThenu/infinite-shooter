@@ -1,7 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://cp6oe725js6pm"]
+[gd_scene load_steps=7 format=3 uid="uid://cp6oe725js6pm"]
 
 [ext_resource type="Script" path="res://scenes/bullet/bullet.gd" id="1_hyaiw"]
 [ext_resource type="Texture2D" uid="uid://b77j2lej3y6e1" path="res://assets/tiles_packed.png" id="2_oxm16"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7ssvj"]
+atlas = ExtResource("2_oxm16")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvaly"]
+atlas = ExtResource("2_oxm16")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l7ewj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7ssvj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvaly")
+}],
+"loop": true,
+"name": &"bullet",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5dsg"]
 radius = 3.0
@@ -10,11 +32,10 @@ height = 16.0
 [node name="Bullet" type="Area2D"]
 script = ExtResource("1_hyaiw")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="BulletSkinsSprite" type="AnimatedSprite2D" parent="."]
 self_modulate = Color(0.947561, 0.473083, 0.524126, 1)
-texture = ExtResource("2_oxm16")
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
+sprite_frames = SubResource("SpriteFrames_l7ewj")
+animation = &"bullet"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

@@ -138,9 +138,9 @@ func fire():
 			new_bullet.set_bullet_speed(SPECS_FOR_EACH_LEVEL[str(GameManager.player_level)]["bullet_speed"])
 			new_bullet.set_bullet_direction(Vector2(0, -1))
 			
-			var x_pos = player.position.x + (i * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["distance_to_guns_from_center"]) + (i * n_bullet * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["space_between_guns"])
-			var y_pos = player.position.y + (n_bullet * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["latency_between_bullets"])
-			new_bullet.position = Vector2(x_pos, y_pos)
+			var x_pos = player.global_position.x + (i * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["distance_to_guns_from_center"]) + (i * n_bullet * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["space_between_guns"])
+			var y_pos = player.global_position.y + (n_bullet * RENDERING_SPECS_FOR_EACH_COLOR[GameManager.player_color]["latency_between_bullets"])
+			new_bullet.global_position = Vector2(x_pos, y_pos)
 			
 			get_parent().add_child(new_bullet)
 	CAN_FIRE = false
