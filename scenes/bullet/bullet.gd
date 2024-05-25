@@ -19,9 +19,15 @@ func _ready():
 func _physics_process(delta):
 	position.x += delta * BULLET_VELOCITY.x
 	position.y += delta * BULLET_VELOCITY.y
-	print(position)
-	if position.y < 0:
+	
+	# automatically deleting the bullet instance once it goes out of the screen
+	var screen_size = get_viewport().size
+	if global_position.y < 0 or global_position.y > screen_size.y:
 		queue_free()
+	elif global_position.x < 0 or global_position.x > screen_size.x:
+		queue_free()
+	else:
+		pass
 
 func set_bullet_speed(new_speed: int):
 	BULLET_SPEED = new_speed

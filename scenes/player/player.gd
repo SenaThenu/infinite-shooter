@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 # Global variables
-@export var SPEED: int = 500
+@export var SPEED: int = 300
 
 const SPECS_FOR_EACH_LEVEL = {
 	"1": {

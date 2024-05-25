@@ -71,7 +71,6 @@ animations = [{
 radius = 180.0
 
 [node name="Tank" type="Area2D"]
-z_index = 1
 script = ExtResource("1_s4eex")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

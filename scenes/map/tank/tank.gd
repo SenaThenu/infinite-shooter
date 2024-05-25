@@ -7,16 +7,19 @@ var TANK_PROPS = {
 		"1": {
 			"attack_range_radius": 190,
 			"ammo_load_time": 0.7,
+			"bullet_speed": 250,
 		},
 		"2": {
 			"attack_range_radius": 170,
 			"ammo_load_time": 0.5,
+			"bullet_speed": 300,
 			"distance_to_guns_from_center": 30,
 		}
 	},
 	"green": {
 		"1": {
 			"attack_range_radius": 150,	
+			"bullet_speed": 200,
 			"ammo_load_time": 0.9,
 		}
 	}
@@ -29,6 +32,8 @@ var PAUSE_TILL_NEXT_FIRE = 0
 
 @onready var attack_range = $AttackRange/CollisionShape2D
 @onready var head_spirte = $HeadSpirte
+@onready var base_sprite = $BaseSprite
+
 const BULLET_SCENE = preload("res://scenes/bullet/bullet.tscn")
 
 # Called when the node enters the scene tree for the first time.
@@ -36,6 +41,12 @@ func _ready():
 	assert(TANK_MODEL != null, "Please set the tank model using set_tank_model()")
 	attack_range.shape.radius = TANK_PROPS[TANK_MODEL][str(TANK_LEVEL)]["attack_range_radius"]
 	AMMO_LOAD_TIME = TANK_PROPS[TANK_MODEL][str(TANK_LEVEL)]["ammo_load_time"]
+	PAUSE_TILL_NEXT_FIRE = AMMO_LOAD_TIME
+	
+	# setting up the sprite
+	base_sprite.animation = TANK_MODEL
+	head_spirte.animation = TANK_MODEL
+	head_spirte.frame = TANK_LEVEL - 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -72,8 +83,8 @@ func handle_firing(delta, angle):
 	if not CAN_FIRE:
 		PAUSE_TILL_NEXT_FIRE -= delta
 		if PAUSE_TILL_NEXT_FIRE <= 0:
-			CAN_FIRE = true
 			PAUSE_TILL_NEXT_FIRE = AMMO_LOAD_TIME
+			CAN_FIRE = true
 	else:
 		# instantiating and spawning a bullet
 		fire_bullet(angle)
@@ -88,17 +99,17 @@ func fire_bullet(angle):
 	
 	var new_bullet = BULLET_SCENE.instantiate()
 	new_bullet.set_bullet_state(bullet_state)
-	new_bullet.set_bullet_speed(1000)
-	new_bullet.global_position = head_spirte.global_position
+	new_bullet.set_bullet_speed(TANK_PROPS[TANK_MODEL][str(TANK_LEVEL)]["bullet_speed"])
 	new_bullet.set_bullet_rotation(rotation_shifter-angle)
 	
 	var direction_x = cos(deg_to_rad(angle))
 	var direction_y = -sin(deg_to_rad(angle))
-	print(direction_x, direction_y)
-	print(head_spirte.global_position)
+	
 	new_bullet.set_bullet_direction(Vector2(direction_x, direction_y))
 
 	get_parent().add_child(new_bullet)
+	new_bullet.global_position = head_spirte.global_position
+	
 	CAN_FIRE = false
 
 func set_tank_model(model):
